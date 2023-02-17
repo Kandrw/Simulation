@@ -5,7 +5,7 @@
 
 class QTimer;
 class QLabel;
-//class stack_object;
+class Stack_object;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -42,6 +42,7 @@ public:
 public:
     QTimer *simulation_timer;
     QLabel *simulation_map;
+    Stack_object *list_object;
 
 private:
     void initializationSimulationMaps();
