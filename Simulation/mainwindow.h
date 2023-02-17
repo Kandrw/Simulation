@@ -26,7 +26,7 @@ private:
     int map_margin_from_edges_x_left = 10;
     int map_margin_from_edges_x_right = 10;
     int map_margin_from_edges_y_up = 100;
-    int map_margin_from_edges_y_down = 100;
+    int map_margin_from_edges_y_down = 10;
 
     int map_size_x;
     int map_size_y;
@@ -43,8 +43,14 @@ public:
     QTimer *simulation_timer;
     QLabel *simulation_map;
 
+private:
+    void initializationSimulationMaps();
+    void initializationSimulationTimer();
+
 
 private slots:
+    void onTimeout();
+
     void on_exit_program_triggered();
 
     void on_button_pause_simulation_clicked();
