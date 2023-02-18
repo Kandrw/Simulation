@@ -9,6 +9,7 @@
 #include <QtWidgets>
 #include "QTimer"
 #include <QMovie>
+#include <QMouseEvent>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -63,6 +64,35 @@ void MainWindow::onTimeout(){
             map_margin_from_edges_y_up, map_margin_from_edges_y_up + map_size_y
                     );
         i_stack_object = i_stack_object->next;
+    }
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *mouse){
+    std::cout<<"[====]click button\n";
+    if(mouse->buttons() == Qt::LeftButton){
+        std::cout<<"[T]click button\n";
+        std::cout<<"x = "<<mouse->pos().rx()<<"y = "<<mouse->pos().ry()<<std::endl;
+
+        Stack_object *i_stack_object = list_object->next;
+
+        while(i_stack_object){
+            if(i_stack_object->ptr_object->return_cursor_touch(mouse->pos().rx(), mouse->pos().ry()))
+            {
+                ui->label_info_object->setText(QString::fromStdString(
+                            i_stack_object->ptr_object->return_info_params()));
+                id_delete_by_clicking = i_stack_object->id;
+                break;
+
+            }
+            i_stack_object = i_stack_object->next;
+        }
+
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event){
+    if(event->buttons() == Qt::RightButton){
+        std::cout<<"[R]click button\n";
     }
 }
 
@@ -130,5 +160,29 @@ void MainWindow::on_button_clear_object_all_clicked()
     list_object->id = 0;
     list_object->next = nullptr;
     ui->label_count_object_all->setText(QString::fromStdString("0"));
+}
+
+
+
+
+void MainWindow::on_button_delete_object_clicked()
+{
+    if(id_delete_by_clicking != 0){
+        Object_label *delete_ptr_object = search_id_object_list(list_object, id_delete_by_clicking );
+        if(delete_ptr_object){
+            this->layout()->removeWidget(delete_ptr_object->form_visual);
+            if(delete_object_list_by_id(list_object, id_delete_by_clicking)){
+                std::cout<<"delete "<<id_delete_by_clicking<<std::endl;
+            }
+            else{
+                std::cout<<"not found id "<<id_delete_by_clicking<<std::endl;
+            }
+            //delete delete_ptr_object;
+            id_delete_by_clicking = 0;
+            std::string count_title = std::to_string(list_object->id);
+            ui->label_count_object_all->setText(QString::fromStdString(count_title));
+            ui->label_info_object->setText("Объект на выбран");
+        }
+    }
 }
 

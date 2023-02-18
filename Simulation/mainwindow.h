@@ -38,6 +38,7 @@ private:
 public:
     bool pause_simulation = true;
     int simulation_fps = 60;
+    int id_delete_by_clicking = 0;
 
 public:
     QTimer *simulation_timer;
@@ -47,9 +48,12 @@ public:
 private:
     void initializationSimulationMaps();
     void initializationSimulationTimer();
-
+    void mousePressEvent(QMouseEvent *mouse);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
+
+
     void onTimeout();
 
     void on_exit_program_triggered();
@@ -59,6 +63,8 @@ private slots:
     void on_button_create_random_object_clicked();
 
     void on_button_clear_object_all_clicked();
+
+    void on_button_delete_object_clicked();
 
 private:
     Ui::MainWindow *ui;

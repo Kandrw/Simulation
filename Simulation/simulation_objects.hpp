@@ -2,9 +2,12 @@
 #define SIMULATION_OBJECTS_HPP
 #define MAX_ID 111222
 
+#include <iostream>
+
 class QLabel;
 
 class Object_label;
+
 
 struct Stack_object{
     int id;
@@ -15,10 +18,17 @@ struct Stack_object{
 
 struct Stack_points_xy{
     int x, y;
-    Stack_points_xy *next;
+    Stack_points_xy *next = nullptr;
+    Stack_points_xy(int x, int y);
 
 };
-
+class ListPoints{
+public:
+    int count_points;
+    Stack_points_xy *head_stack, *end_stack;
+    ListPoints(int x, int y);
+    void addPoints(int x1, int y1);
+};
 
 class Object_label{
 public:
@@ -26,6 +36,10 @@ public:
                  int id, int speed, int probabilistic_movement);
     ~Object_label();
     void random_walk(int x_left, int x_right, int y_left, int y_right);
+
+    std::string return_info_params();
+
+    bool return_cursor_touch(int x_cursor, int y_cursor);
 
 public:
     int size_x, size_y;
@@ -36,7 +50,7 @@ public:
 public:
 
     QLabel *form_visual;
-
+    ListPoints *list_points;
 
 };
 
@@ -44,8 +58,8 @@ public:
 
 void insert_list_object(Stack_object *list, Object_label *ptr_object);
 int Create_id_object(Stack_object *list);
-
-
+Object_label *search_id_object_list(Stack_object *list, int id);
+bool delete_object_list_by_id(Stack_object *list, int id);
 
 
 
