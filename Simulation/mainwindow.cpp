@@ -96,28 +96,7 @@ void MainWindow::onTimeout(){
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *mouse){
-    /*
-    std::cout<<"[====]click button\n";
-    if(mouse->buttons() == Qt::LeftButton){
-        std::cout<<"[T]click button\n";
-        std::cout<<"x = "<<mouse->pos().rx()<<"y = "<<mouse->pos().ry()<<std::endl;
 
-        Stack_object *i_stack_object = list_object->next;
-
-        while(i_stack_object){
-            if(i_stack_object->ptr_object->return_cursor_touch(mouse->pos().rx(), mouse->pos().ry()))
-            {
-                ui->label_info_object->setText(QString::fromStdString(
-                            i_stack_object->ptr_object->return_info_params()));
-                id_delete_by_clicking = i_stack_object->id;
-                break;
-
-            }
-            i_stack_object = i_stack_object->next;
-        }
-
-    }
-    */
     if(mouse->buttons() == Qt::LeftButton){
         std::cout<<"[T]click button\n";
         std::cout<<"x = "<<mouse->pos().rx()<<"y = "<<mouse->pos().ry()<<std::endl;
@@ -164,13 +143,7 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
         map_scale += size_factor;
         int new_map_size_x = add_percentage(map_size_x, map_scale);
         int new_map_size_y = add_percentage(map_size_y, map_scale);
-        //int new_map_pos_x = add_percentage(map_pos_x, )
 
-        // map_pos_x -= 1;
-        //map_pos_y -= 1;
-        //map_scale += 10;
-        //map_size_x += 10;
-        //map_size_y += 10;
 
         simulation_map->setGeometry(map_pos_x, map_pos_y, new_map_size_x, new_map_size_y);
 
@@ -186,12 +159,7 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
         int new_map_size_x = add_percentage(map_size_x, map_scale);
         int new_map_size_y = add_percentage(map_size_y, map_scale);
 
-        //map_pos_x += 1;
-        //map_pos_y += 1;
-        //map_scale -= 10;
-        //map_size_x -= 10;
-        //map_size_y -= 10;
-        //simulation_map->setGeometry(map_pos_x, map_pos_y, map_size_x, map_size_y);
+
         simulation_map->setGeometry(map_pos_x, map_pos_y, new_map_size_x, new_map_size_y);
 
         Stack_object *i_ptr_stack = list_object->next;
@@ -224,7 +192,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
         int new_map_size_x = add_percentage(map_size_x, map_scale);
         int new_map_size_y = add_percentage(map_size_y, map_scale);
-        //simulation_map->setGeometry(map_pos_x, map_pos_y, map_size_x, map_size_y);
+
         simulation_map->setGeometry(map_pos_x, map_pos_y, new_map_size_x, new_map_size_y);
     }
 
@@ -309,7 +277,7 @@ void MainWindow::on_button_delete_object_clicked()
             else{
                 std::cout<<"not found id "<<id_delete_by_clicking<<std::endl;
             }
-            //delete delete_ptr_object;
+
             id_delete_by_clicking = 0;
             std::string count_title = std::to_string(list_object->id);
             ui->label_count_object_all->setText(QString::fromStdString(count_title));

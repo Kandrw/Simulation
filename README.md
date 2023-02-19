@@ -4,3 +4,6 @@
 ## Задание
 <img src = "lab2.png">
 
+## Пример
+
+<img src = "lab2_example.png">

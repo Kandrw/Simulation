@@ -116,34 +116,7 @@ Object_label::~Object_label(){
 
 
 void Object_label::random_walk(int map_size_x, int map_size_y){
-    /*
-    int direct = rand() % probabilistic_movement;
-    int x_move = 0, y_move = 0;
-    if(direct == 0){
-        if(pos_x + speed + size_x<= x_right)
-            x_move += speed;
-    }
-    else if(direct == 1){
-        if(pos_x - speed >= x_left)
-            x_move -= speed;
-    }
-    else if(direct == 2){
-        if(pos_y + speed + size_y <= y_down)
-            y_move += speed;
-    }
-    else if(direct == 3){
-        if(pos_y - speed >= y_up)
-            y_move -= speed;
-    }
 
-
-    if(x_move != 0 || y_move != 0){
-        pos_x += x_move;
-        pos_y += y_move;
-        list_points->addPoints(pos_x, pos_y);
-        //form_visual->setGeometry(pos_x, pos_y, size_x, size_y);
-    }
-    */
     int direction = rand() % probabilistic_movement;
     int x_move = 0, y_move = 0;
     if(direction == 0){
@@ -209,28 +182,10 @@ int add_percentage(int number, int percent){
 
 void Object_label::draw(int x_new, int y_new, int scale){
 
-    //form_visual->setGeometry(pos_x + x_new, pos_y + y_new, size_x + scale, size_y+scale);
-    //form_visual->setGeometry(pos_x, pos_y, size_x + scale, size_y + scale);
-
     int new_size_x = add_percentage(size_x, scale);
     int new_size_y = add_percentage(size_y, scale);
-
-    //int new_pos_x = add_percentage(x_new, scale/2) + pos_x;
-    //int new_pos_y = add_percentage(y_new, scale/2) + pos_y;
-    //std::cout<<"x_new = "<<x_new<<std::endl;
-    //std::cout<<"y_new = "<<y_new<<std::endl;
-    //std::cout<<"new pos ob x = "<<new_pos_x<<std::endl;
-    //std::cout<<"new pos ob y = "<<new_pos_y<<std::endl;
     int new_pos_x = x_new + add_percentage(pos_x, scale);
     int new_pos_y = y_new + add_percentage(pos_y, scale);
-
-
-    //int new_pos_x = pos_x + x_new;
-    //int new_pos_y = pos_y + y_new;
-
-
-
-    //form_visual->setGeometry(pos_x + x_new, pos_y + y_new, new_size_x, new_size_y);
     form_visual->setGeometry(new_pos_x, new_pos_y, new_size_x, new_size_y);
 
     std::cout<<"new x = "<<new_size_x<<"  new y = "<<new_size_y<<std::endl;
