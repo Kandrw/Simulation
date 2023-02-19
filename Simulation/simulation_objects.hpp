@@ -35,11 +35,12 @@ public:
     Object_label(int pos_x, int pos_y, int size_x, int size_y, \
                  int id, int speed, int probabilistic_movement);
     ~Object_label();
-    void random_walk(int x_left, int x_right, int y_left, int y_right);
+    void random_walk(int map_size_x, int map_size_y);
 
     std::string return_info_params();
 
     bool return_cursor_touch(int x_cursor, int y_cursor);
+    void draw(int x_new, int y_new, int scale);
 
 public:
     int size_x, size_y;
@@ -60,7 +61,7 @@ void insert_list_object(Stack_object *list, Object_label *ptr_object);
 int Create_id_object(Stack_object *list);
 Object_label *search_id_object_list(Stack_object *list, int id);
 bool delete_object_list_by_id(Stack_object *list, int id);
-
+int add_percentage(int number, int percent);
 
 
 #endif // SIMULATION_OBJECTS_HPP

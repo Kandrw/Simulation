@@ -105,6 +105,19 @@
      <string>Объект не выбран</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="button_map_simulation_center">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>10</y>
+      <width>91</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Центрировать</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

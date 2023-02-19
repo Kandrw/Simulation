@@ -23,13 +23,15 @@ private:
     int size_window_height = 800;
     int size_window_weight = 1000;
 
-    int map_margin_from_edges_x_left = 10;
-    int map_margin_from_edges_x_right = 10;
-    int map_margin_from_edges_y_up = 100;
-    int map_margin_from_edges_y_down = 10;
+    //int map_margin_from_edges_x_left = 10;
+    //int map_margin_from_edges_x_right = 10;
+    //int map_margin_from_edges_y_up = 100;
+    //int map_margin_from_edges_y_down = 10;
+    int map_pos_x = 10;
+    int map_pos_y = 100;
+    int map_size_x = 1000;
+    int map_size_y = 1000;
 
-    int map_size_x;
-    int map_size_y;
 
 
 
@@ -40,6 +42,12 @@ public:
     int simulation_fps = 60;
     int id_delete_by_clicking = 0;
 
+    int old_pos_mause_x = 0;
+    int old_pos_mause_y = 0;
+
+    int size_factor = 10;
+    int map_scale = 0;
+
 public:
     QTimer *simulation_timer;
     QLabel *simulation_map;
@@ -48,8 +56,11 @@ public:
 private:
     void initializationSimulationMaps();
     void initializationSimulationTimer();
+
     void mousePressEvent(QMouseEvent *mouse);
-    void mouseReleaseEvent(QMouseEvent *event);
+    void wheelEvent(QWheelEvent *ev);
+    void mouseMoveEvent(QMouseEvent *event);
+    //void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
 
@@ -66,7 +77,20 @@ private slots:
 
     void on_button_delete_object_clicked();
 
+    void on_button_map_simulation_center_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
+
+
+
+
+
+
+
+
+
+
+
 #endif // MAINWINDOW_H
