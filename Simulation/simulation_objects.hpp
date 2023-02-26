@@ -13,13 +13,17 @@ struct Stack_object{
 private:
     int id;
     Object_label *ptr_object = nullptr;
+    Stack_object *next = nullptr;
 public:
     int get_id();
     void set_id(int new_id);
     //void add_id();
     Object_label *get_object();
 
-    Stack_object *next = nullptr;
+
+    Stack_object *get_next();
+    void set_next(Stack_object *new_next);
+
 
     Stack_object(Object_label *ptr_object);
     //~Stack_object

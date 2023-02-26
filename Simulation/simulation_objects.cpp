@@ -77,15 +77,26 @@ Object_label* Stack_object::get_object(){
     return ptr_object;
 }
 
+Stack_object *Stack_object::get_next(){
+
+    return next;
+}
+void Stack_object::set_next(Stack_object *new_next){
+    next = new_next;
+}
+
+
 //
 
 // вставка объекта в список
 void insert_list_object(Stack_object *list, Object_label *ptr_object){
     Stack_object *ptr = list;
-    while(ptr->next){
-        ptr = ptr->next;
+    while(ptr->get_next()){
+        //ptr = ptr->next;
+        ptr = ptr->get_next();
     }
-    ptr->next = new Stack_object(ptr_object);
+    //ptr->next = new Stack_object(ptr_object);
+    ptr->set_next(new Stack_object(ptr_object));
 
     //list->id++;
     list->set_id(list->get_id() + 1);
@@ -97,13 +108,17 @@ int Create_id_object(Stack_object *list){
     Stack_object *i_stack_object;
     while(1){
         new_id = rand() % MAX_ID + 10;
-        i_stack_object = list->next;
+        //i_stack_object = list->next;
+        i_stack_object = list->get_next();
+
         while(i_stack_object){
             if(i_stack_object->get_id() == new_id){
                 found_id = 1;
                 break;
             }
-            i_stack_object = i_stack_object->next;
+            //i_stack_object = i_stack_object->next;
+            i_stack_object = i_stack_object->get_next();
+
         }
         if(!found_id){
             break;
@@ -115,23 +130,29 @@ int Create_id_object(Stack_object *list){
 }
 //найти объект по id в списке и вернуть на него указатель
 Object_label *search_id_object_list(Stack_object *list, int id){
-    Stack_object *i_ptr = list->next;
+    //Stack_object *i_ptr = list->next;
+    Stack_object *i_ptr = list->get_next();
+
     while(i_ptr){
         if(i_ptr->get_id() == id){
             //return i_ptr->ptr_object;
             return i_ptr->get_object();
 
         }
-        i_ptr = i_ptr->next;
+        //i_ptr = i_ptr->next;
+        i_ptr = i_ptr->get_next();
+
     }
     return nullptr;
 }
 //найти объект по id в списке и удалить его
 bool delete_object_list_by_id(Stack_object *list, int id){
-    Stack_object *i_ptr = list->next, *i_ptr_prev = list;
+    Stack_object *i_ptr = list->get_next(), *i_ptr_prev = list;
     while(i_ptr){
         if(i_ptr->get_id() == id){
-            i_ptr_prev->next = i_ptr->next;
+            //i_ptr_prev->next = i_ptr->next;
+            i_ptr_prev->set_next(i_ptr->get_next());
+
             //delete i_ptr->ptr_object;
             delete i_ptr->get_object();
             delete i_ptr;
@@ -140,7 +161,8 @@ bool delete_object_list_by_id(Stack_object *list, int id){
             return true;
         }
         i_ptr_prev = i_ptr;
-        i_ptr = i_ptr->next;
+        i_ptr = i_ptr->get_next();
+
     }
     return false;
 }

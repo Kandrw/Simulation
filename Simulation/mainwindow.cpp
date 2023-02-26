@@ -63,12 +63,12 @@ void MainWindow::onTimeout(){
 
 
     std::cout<<"[==============]"<<std::endl;
-    Stack_object *i_stack_object = list_object->next;
+    Stack_object *i_stack_object = list_object->get_next();
     while(i_stack_object){
         i_stack_object->get_object()->random_walk(map_size_x, map_size_y);
         i_stack_object->get_object()->draw(map_pos_x, map_pos_y, map_scale);
 
-        i_stack_object = i_stack_object->next;
+        i_stack_object = i_stack_object->get_next();
     }
 
 }
@@ -79,7 +79,7 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
         std::cout<<"[T]click button\n";
         std::cout<<"x = "<<mouse->pos().rx()<<"y = "<<mouse->pos().ry()<<std::endl;
 
-        Stack_object *i_stack_object = list_object->next;
+        Stack_object *i_stack_object = list_object->get_next();
         int global_pos_object_x, global_pos_object_y;
 
         while(i_stack_object){
@@ -95,18 +95,18 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
                             i_stack_object->get_object()->return_info_params()));
                 id_delete_by_clicking = i_stack_object->get_id();
                 Object_label *current_obj = i_stack_object->get_object();
-                i_stack_object = list_object->next;
+                i_stack_object = list_object->get_next();
                 std::cout<<"\t\t[|||||||||||||||||||||||||||]"<<std::endl;
                 while(i_stack_object){
                     if(i_stack_object->get_id() != id_delete_by_clicking){
                         current_obj->return_distance_to_object(i_stack_object->get_object());
                     }
-                    i_stack_object = i_stack_object->next;
+                    i_stack_object = i_stack_object->get_next();
                 }
 
                 break;
             }
-            i_stack_object = i_stack_object->next;
+            i_stack_object = i_stack_object->get_next();
         }
 
     }
@@ -138,10 +138,10 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
 
         simulation_map->setGeometry(map_pos_x, map_pos_y, new_map_size_x, new_map_size_y);
 
-        Stack_object *i_ptr_stack = list_object->next;
+        Stack_object *i_ptr_stack = list_object->get_next();
         while(i_ptr_stack){
             i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
-            i_ptr_stack = i_ptr_stack->next;
+            i_ptr_stack = i_ptr_stack->get_next();
         }
 
     }
@@ -153,10 +153,10 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
 
         simulation_map->setGeometry(map_pos_x, map_pos_y, new_map_size_x, new_map_size_y);
 
-        Stack_object *i_ptr_stack = list_object->next;
+        Stack_object *i_ptr_stack = list_object->get_next();
         while(i_ptr_stack){
             i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
-            i_ptr_stack = i_ptr_stack->next;
+            i_ptr_stack = i_ptr_stack->get_next();
         }
 
     }
@@ -175,10 +175,10 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
         map_pos_x += new_pos_mouse_x;
         map_pos_y += new_pos_mouse_y;
 
-        Stack_object *i_ptr_stack = list_object->next;
+        Stack_object *i_ptr_stack = list_object->get_next();
         while(i_ptr_stack){
             i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
-            i_ptr_stack = i_ptr_stack->next;
+            i_ptr_stack = i_ptr_stack->get_next();
         }
 
         int new_map_size_x = add_percentage(map_size_x, map_scale);
@@ -244,10 +244,10 @@ void MainWindow::on_button_clear_object_all_clicked()
 {
 
     std::cout<<"Test clear - click"<<std::endl;
-    Stack_object *i_ptr = list_object->next, *i_ptr_clear;
+    Stack_object *i_ptr = list_object->get_next(), *i_ptr_clear;
     while(i_ptr){
         i_ptr_clear = i_ptr;
-        i_ptr = i_ptr->next;
+        i_ptr = i_ptr->get_next();
         //i_ptr = i_ptr;
 
         this->layout()->removeWidget(i_ptr_clear->get_object()->form_visual);
@@ -256,7 +256,8 @@ void MainWindow::on_button_clear_object_all_clicked()
     }
     //list_object->id = 0;
     list_object->set_id(0);
-    list_object->next = nullptr;
+    //list_object->next = nullptr;
+    list_object->set_next(nullptr);
     ui->label_count_object_all->setText(QString::fromStdString("0"));
 
 }
@@ -290,10 +291,10 @@ void MainWindow::on_button_map_simulation_center_clicked()
     map_pos_y = 100;
     map_scale = 0;
     simulation_map->setGeometry(map_pos_x, map_pos_y, map_size_x, map_size_y);
-    Stack_object *i_ptr_stack = list_object->next;
+    Stack_object *i_ptr_stack = list_object->get_next();
     while(i_ptr_stack){
         i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
-        i_ptr_stack = i_ptr_stack->next;
+        i_ptr_stack = i_ptr_stack->get_next();
     }
 
 }
