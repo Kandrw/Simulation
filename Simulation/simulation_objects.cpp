@@ -36,7 +36,7 @@ Stack_object::Stack_object(Object_label *ptr_object) : ptr_object(ptr_object)
         id = 0;
     }
 }
-
+// вставка объекта в список
 void insert_list_object(Stack_object *list, Object_label *ptr_object){
     Stack_object *ptr = list;
     while(ptr->next){
@@ -69,7 +69,7 @@ int Create_id_object(Stack_object *list){
     return new_id;
 
 }
-
+//найти объект по id в списке и вернуть на него указатель
 Object_label *search_id_object_list(Stack_object *list, int id){
     Stack_object *i_ptr = list->next;
     while(i_ptr){
@@ -80,7 +80,7 @@ Object_label *search_id_object_list(Stack_object *list, int id){
     }
     return nullptr;
 }
-
+//найти объект по id в списке и удалить его
 bool delete_object_list_by_id(Stack_object *list, int id){
     Stack_object *i_ptr = list->next, *i_ptr_prev = list;
     while(i_ptr){
@@ -114,7 +114,7 @@ Object_label::~Object_label(){
     delete form_visual;
 }
 
-
+//случайное движение
 void Object_label::random_walk(int map_size_x, int map_size_y){
 
     int direction = rand() % probabilistic_movement;
@@ -146,7 +146,7 @@ void Object_label::random_walk(int map_size_x, int map_size_y){
     }
 
 }
-
+//вернуть характеристики объекта в виде строки
 std::string Object_label::return_info_params(){
     std::string parameters = "x = ";
     parameters += std::to_string(pos_x);
@@ -156,7 +156,7 @@ std::string Object_label::return_info_params(){
     parameters += " count points = "+std::to_string(list_points->count_points);
     return parameters;
 }
-
+//проверить нахождение курсора мыши в пределах размера объекта
 bool Object_label::return_cursor_touch(int x_cursor, int y_cursor){
     if((x_cursor >= pos_x && x_cursor <= pos_x+size_x) && \
     (y_cursor >= pos_y && y_cursor <= pos_y+size_y))
@@ -168,7 +168,7 @@ bool Object_label::return_cursor_touch(int x_cursor, int y_cursor){
 
 
 }
-
+//прибавить к числу процент от этого числа
 int add_percentage(int number, int percent){
     int minus = 1;
     if(number < 0){
@@ -179,7 +179,7 @@ int add_percentage(int number, int percent){
     return (minus * number) + ((double)percent * per_1);
 }
 
-
+//перерисовать объект согласно маштабу
 void Object_label::draw(int x_new, int y_new, int scale){
 
     int new_size_x = add_percentage(size_x, scale);

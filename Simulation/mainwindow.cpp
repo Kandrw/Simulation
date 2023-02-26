@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFixedSize(size_window_weight, size_window_height);
     this->setWindowTitle("Simulation");
 
-    //QVBoxLayout* vLayout = new QVBoxLayout();
 
     initializationSimulationMaps();
     initializationSimulationTimer();
@@ -40,20 +39,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*
-void MainWindow::initializationSimulationMaps(){
-    map_size_x = size_window_weight - \
-            (map_margin_from_edges_x_left + map_margin_from_edges_x_right);
-    map_size_y = size_window_height - \
-            (map_margin_from_edges_y_up + map_margin_from_edges_y_down);
-    simulation_map = new QLabel();
-    simulation_map->setGeometry(map_margin_from_edges_x_left,
-                                map_margin_from_edges_y_up,
-                                map_size_x, map_size_y);
-    simulation_map->setStyleSheet("background-color : #808080");
-    this->layout()->addWidget(simulation_map);
-}
-*/
+
 void MainWindow::initializationSimulationMaps(){
 
     simulation_map = new QLabel();
@@ -76,16 +62,6 @@ void MainWindow::onTimeout(){
 
 
     std::cout<<"[==============]"<<std::endl;
-    /*
-    Stack_object *i_stack_object = list_object->next;
-    while(i_stack_object){
-        i_stack_object->ptr_object->random_walk(
-            map_margin_from_edges_x_left, map_margin_from_edges_x_left + map_size_x,
-            map_margin_from_edges_y_up, map_margin_from_edges_y_up + map_size_y
-                    );
-        i_stack_object = i_stack_object->next;
-    }
-    */
     Stack_object *i_stack_object = list_object->next;
     while(i_stack_object){
         i_stack_object->ptr_object->random_walk(map_size_x, map_size_y);
@@ -94,7 +70,7 @@ void MainWindow::onTimeout(){
     }
 
 }
-
+//событие нажатия кнопок мыши
 void MainWindow::mousePressEvent(QMouseEvent *mouse){
 
     if(mouse->buttons() == Qt::LeftButton){
@@ -124,8 +100,8 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
 
 
     if(mouse->buttons() == Qt::LeftButton && \
-            (mouse->pos().rx() >= map_pos_x && mouse->pos().rx() <= map_pos_x + map_size_x) &&\
-            (mouse->pos().ry() >= map_pos_y && mouse->pos().ry() <= map_pos_y + map_size_y))
+            (mouse->pos().rx() >= map_pos_x && mouse->pos().rx() <= map_pos_x + add_percentage(map_size_x, map_scale)) &&\
+            (mouse->pos().ry() >= map_pos_y && mouse->pos().ry() <= map_pos_y + add_percentage(map_size_y, map_scale)))
     {
         old_pos_mause_x = mouse->pos().rx();
         old_pos_mause_y = mouse->pos().ry();
@@ -137,6 +113,7 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
     }
 
 }
+//событие прокручивания
 void MainWindow::wheelEvent(QWheelEvent *ev){
 
     if(ev->angleDelta().y() > 0 && map_scale < 200){
@@ -171,7 +148,7 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
     }
 
 }
-
+//событие мышки
 void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
     int new_pos_mouse_x, new_pos_mouse_y;
@@ -243,6 +220,8 @@ void MainWindow::on_button_create_random_object_clicked()
     std::string count_object = std::to_string(list_object->id);
     ui->label_count_object_all->setText(QString::fromStdString(count_object));
     this->layout()->addWidget(new_object_label->form_visual);
+    new_object_label->form_visual->lower();
+    simulation_map->stackUnder(new_object_label->form_visual);
 
 }
 
