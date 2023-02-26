@@ -29,11 +29,11 @@ private:
     int map_size_y = 1000;
 
 
+private:
 
 
 
-
-public:
+//public:
     bool pause_simulation = true;
     int simulation_fps = 60;
     int id_delete_by_clicking = 0;

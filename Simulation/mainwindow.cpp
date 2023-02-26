@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "simulation_objects.hpp"
+#include "basi_functions.hpp"
 
 #include <iostream>
 #include <string>
@@ -64,8 +65,9 @@ void MainWindow::onTimeout(){
     std::cout<<"[==============]"<<std::endl;
     Stack_object *i_stack_object = list_object->next;
     while(i_stack_object){
-        i_stack_object->ptr_object->random_walk(map_size_x, map_size_y);
-        i_stack_object->ptr_object->draw(map_pos_x, map_pos_y, map_scale);
+        i_stack_object->get_object()->random_walk(map_size_x, map_size_y);
+        i_stack_object->get_object()->draw(map_pos_x, map_pos_y, map_scale);
+
         i_stack_object = i_stack_object->next;
     }
 
@@ -81,15 +83,27 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
         int global_pos_object_x, global_pos_object_y;
 
         while(i_stack_object){
-            global_pos_object_x = map_pos_x + add_percentage(i_stack_object->ptr_object->pos_x, map_scale);
-            global_pos_object_y = map_pos_y + add_percentage(i_stack_object->ptr_object->pos_y, map_scale);
+            global_pos_object_x = map_pos_x + add_percentage(i_stack_object->get_object()->get_pos_x(), map_scale);
+            global_pos_object_y = map_pos_y + add_percentage(i_stack_object->get_object()->get_pos_y(), map_scale);
+
             if((mouse->pos().rx() >= global_pos_object_x && \
-                mouse->pos().rx() <= global_pos_object_x + i_stack_object->ptr_object->size_x) && \
+                mouse->pos().rx() <= global_pos_object_x + i_stack_object->get_object()->get_size_x()) && \
                 (mouse->pos().ry() >= global_pos_object_y && \
-                mouse->pos().ry() <= global_pos_object_y + i_stack_object->ptr_object->size_y)){
+                mouse->pos().ry() <= global_pos_object_y + i_stack_object->get_object()->get_size_y()))
+            {
                 ui->label_info_object->setText(QString::fromStdString(
-                            i_stack_object->ptr_object->return_info_params()));
-                id_delete_by_clicking = i_stack_object->id;
+                            i_stack_object->get_object()->return_info_params()));
+                id_delete_by_clicking = i_stack_object->get_id();
+                Object_label *current_obj = i_stack_object->get_object();
+                i_stack_object = list_object->next;
+                std::cout<<"\t\t[|||||||||||||||||||||||||||]"<<std::endl;
+                while(i_stack_object){
+                    if(i_stack_object->get_id() != id_delete_by_clicking){
+                        current_obj->return_distance_to_object(i_stack_object->get_object());
+                    }
+                    i_stack_object = i_stack_object->next;
+                }
+
                 break;
             }
             i_stack_object = i_stack_object->next;
@@ -126,7 +140,7 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
 
         Stack_object *i_ptr_stack = list_object->next;
         while(i_ptr_stack){
-            i_ptr_stack->ptr_object->draw(map_pos_x, map_pos_y, map_scale);
+            i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
             i_ptr_stack = i_ptr_stack->next;
         }
 
@@ -141,7 +155,7 @@ void MainWindow::wheelEvent(QWheelEvent *ev){
 
         Stack_object *i_ptr_stack = list_object->next;
         while(i_ptr_stack){
-            i_ptr_stack->ptr_object->draw(map_pos_x, map_pos_y, map_scale);
+            i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
             i_ptr_stack = i_ptr_stack->next;
         }
 
@@ -163,7 +177,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event){
 
         Stack_object *i_ptr_stack = list_object->next;
         while(i_ptr_stack){
-            i_ptr_stack->ptr_object->draw(map_pos_x, map_pos_y, map_scale);
+            i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
             i_ptr_stack = i_ptr_stack->next;
         }
 
@@ -206,9 +220,9 @@ void MainWindow::on_button_create_random_object_clicked()
 
     int pos_x_new_object = rand() % (map_size_x);
     int pos_y_new_object = rand() % (map_size_y);
-    int size_x_new_object = 10 + (rand() % 20);
-    int size_y_new_object = 10 + (rand() % 20);
-    int speed = 1 + (rand() % 20);
+    int size_x_new_object = 10 + (rand() % 30);
+    int size_y_new_object = 10 + (rand() % 30);
+    int speed = 1 + (rand() % 50);
     int id = Create_id_object(list_object);
     int probabilistic_movement = 4 + (rand() % 20);
     Object_label *new_object_label = new Object_label(\
@@ -217,7 +231,7 @@ void MainWindow::on_button_create_random_object_clicked()
 
     new_object_label->draw(map_pos_x, map_pos_y, map_scale);
     insert_list_object(list_object, new_object_label);
-    std::string count_object = std::to_string(list_object->id);
+    std::string count_object = std::to_string(list_object->get_id());
     ui->label_count_object_all->setText(QString::fromStdString(count_object));
     this->layout()->addWidget(new_object_label->form_visual);
     new_object_label->form_visual->lower();
@@ -234,11 +248,14 @@ void MainWindow::on_button_clear_object_all_clicked()
     while(i_ptr){
         i_ptr_clear = i_ptr;
         i_ptr = i_ptr->next;
-        this->layout()->removeWidget(i_ptr_clear->ptr_object->form_visual);
-        delete i_ptr_clear->ptr_object;
+        //i_ptr = i_ptr;
+
+        this->layout()->removeWidget(i_ptr_clear->get_object()->form_visual);
+        delete i_ptr_clear->get_object();
         delete i_ptr_clear;
     }
-    list_object->id = 0;
+    //list_object->id = 0;
+    list_object->set_id(0);
     list_object->next = nullptr;
     ui->label_count_object_all->setText(QString::fromStdString("0"));
 
@@ -258,7 +275,7 @@ void MainWindow::on_button_delete_object_clicked()
             }
 
             id_delete_by_clicking = 0;
-            std::string count_title = std::to_string(list_object->id);
+            std::string count_title = std::to_string(list_object->get_id());
             ui->label_count_object_all->setText(QString::fromStdString(count_title));
             ui->label_info_object->setText("Объект на выбран");
         }
@@ -275,7 +292,7 @@ void MainWindow::on_button_map_simulation_center_clicked()
     simulation_map->setGeometry(map_pos_x, map_pos_y, map_size_x, map_size_y);
     Stack_object *i_ptr_stack = list_object->next;
     while(i_ptr_stack){
-        i_ptr_stack->ptr_object->draw(map_pos_x, map_pos_y, map_scale);
+        i_ptr_stack->get_object()->draw(map_pos_x, map_pos_y, map_scale);
         i_ptr_stack = i_ptr_stack->next;
     }
 

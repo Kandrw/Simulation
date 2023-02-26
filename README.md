@@ -4,3 +4,4 @@
 ## Задание
 <img src = "lab2.png">
 
+<img src = "lab3-4.png">

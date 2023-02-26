@@ -1,4 +1,5 @@
 #include "simulation_objects.hpp"
+#include "basi_functions.hpp"
 
 #include <iostream>
 #include <stdlib.h>
@@ -6,10 +7,27 @@
 
 #include <QtWidgets>
 
+
+//
+
 Stack_points_xy::Stack_points_xy(int x, int y) : x(x), y(x){
 
 }
+int Stack_points_xy::get_x(){
+    return x;
+}
+int Stack_points_xy::get_y(){
+    return y;
+}
 
+Stack_points_xy* Stack_points_xy::get_next(){
+    return next;
+}
+void Stack_points_xy::set_next(Stack_points_xy* new_next){
+    next = new_next;
+}
+
+//
 
 ListPoints::ListPoints(int x, int y){
     head_stack = new Stack_points_xy(x, y);
@@ -19,23 +37,48 @@ ListPoints::ListPoints(int x, int y){
 
 void ListPoints::addPoints(int x1, int y1){
     count_points++;
-    end_stack->next = new Stack_points_xy(x1, y1);
-    end_stack = end_stack->next;
+    //end_stack->next =
+    end_stack->set_next(new Stack_points_xy(x1, y1));
+    end_stack = end_stack->get_next();
+}
+int ListPoints::set_count_points(){
+
+}
+int ListPoints::get_count_points(){
+    return count_points;
 }
 
 
-
+//
 
 Stack_object::Stack_object(Object_label *ptr_object) : ptr_object(ptr_object)
 {
     if(ptr_object){
 
-        id = ptr_object->id;
+        id = ptr_object->get_id();
     }
     else{
         id = 0;
     }
 }
+
+int Stack_object::get_id(){
+    return id;
+}
+void Stack_object::set_id(int new_id){
+    if(!ptr_object){
+        id = new_id;
+    }
+    else{
+        std::cout<<"Error: you can change the id if the object does not exist"<<std::endl;
+    }
+}
+Object_label* Stack_object::get_object(){
+    return ptr_object;
+}
+
+//
+
 // вставка объекта в список
 void insert_list_object(Stack_object *list, Object_label *ptr_object){
     Stack_object *ptr = list;
@@ -44,7 +87,8 @@ void insert_list_object(Stack_object *list, Object_label *ptr_object){
     }
     ptr->next = new Stack_object(ptr_object);
 
-    list->id++;
+    //list->id++;
+    list->set_id(list->get_id() + 1);
 }
 
 int Create_id_object(Stack_object *list){
@@ -55,7 +99,7 @@ int Create_id_object(Stack_object *list){
         new_id = rand() % MAX_ID + 10;
         i_stack_object = list->next;
         while(i_stack_object){
-            if(i_stack_object->id == new_id){
+            if(i_stack_object->get_id() == new_id){
                 found_id = 1;
                 break;
             }
@@ -73,8 +117,10 @@ int Create_id_object(Stack_object *list){
 Object_label *search_id_object_list(Stack_object *list, int id){
     Stack_object *i_ptr = list->next;
     while(i_ptr){
-        if(i_ptr->id == id){
-            return i_ptr->ptr_object;
+        if(i_ptr->get_id() == id){
+            //return i_ptr->ptr_object;
+            return i_ptr->get_object();
+
         }
         i_ptr = i_ptr->next;
     }
@@ -84,11 +130,13 @@ Object_label *search_id_object_list(Stack_object *list, int id){
 bool delete_object_list_by_id(Stack_object *list, int id){
     Stack_object *i_ptr = list->next, *i_ptr_prev = list;
     while(i_ptr){
-        if(i_ptr->id == id){
+        if(i_ptr->get_id() == id){
             i_ptr_prev->next = i_ptr->next;
-            delete i_ptr->ptr_object;
+            //delete i_ptr->ptr_object;
+            delete i_ptr->get_object();
             delete i_ptr;
-            list->id--;
+            //list->id--;
+            list->set_id(list->get_id() - 1);
             return true;
         }
         i_ptr_prev = i_ptr;
@@ -96,6 +144,8 @@ bool delete_object_list_by_id(Stack_object *list, int id){
     }
     return false;
 }
+
+//
 
 Object_label::Object_label(\
     int pos_x, int pos_y, int size_x, int size_y, \
@@ -105,7 +155,10 @@ Object_label::Object_label(\
 {
     form_visual = new QLabel("");
     form_visual->setGeometry(pos_x, pos_y, size_x, size_y);
-    form_visual->setStyleSheet("background-color : #DAA520");
+    std::string style_obj = "background-color : " + random_color_16_str();
+    //form_visual->setStyleSheet("background-color : #DAA520");
+    form_visual->setStyleSheet(QString::fromStdString(style_obj));
+
     list_points = new ListPoints(pos_x, pos_y);
 
 }
@@ -152,11 +205,13 @@ std::string Object_label::return_info_params(){
     parameters += std::to_string(pos_x);
     parameters += " y = " + std::to_string(pos_y);
     parameters += ", size("+std::to_string(size_x)+" "+std::to_string(size_y)+")";
-    parameters += "\n ID = " + std::to_string(id) + " speed = "+std::to_string(speed);
-    parameters += " count points = "+std::to_string(list_points->count_points);
+    parameters += "\nID = " + std::to_string(id) + " speed = "+std::to_string(speed);
+    parameters += " count points = "+std::to_string(list_points->get_count_points());
+    parameters += "\ndistance = " + std::to_string(return_distance_current());
     return parameters;
 }
 //проверить нахождение курсора мыши в пределах размера объекта
+//потом добавить учитывание маштаба
 bool Object_label::return_cursor_touch(int x_cursor, int y_cursor){
     if((x_cursor >= pos_x && x_cursor <= pos_x+size_x) && \
     (y_cursor >= pos_y && y_cursor <= pos_y+size_y))
@@ -168,18 +223,9 @@ bool Object_label::return_cursor_touch(int x_cursor, int y_cursor){
 
 
 }
-//прибавить к числу процент от этого числа
-int add_percentage(int number, int percent){
-    int minus = 1;
-    if(number < 0){
-        minus = -1;
-        number *= -1;
-    }
-    double per_1 = (double)number / 100;
-    return (minus * number) + ((double)percent * per_1);
-}
 
-//перерисовать объект согласно маштабу
+
+//перерисовать объект согласно масштабу
 void Object_label::draw(int x_new, int y_new, int scale){
 
     int new_size_x = add_percentage(size_x, scale);
@@ -188,13 +234,71 @@ void Object_label::draw(int x_new, int y_new, int scale){
     int new_pos_y = y_new + add_percentage(pos_y, scale);
     form_visual->setGeometry(new_pos_x, new_pos_y, new_size_x, new_size_y);
 
-    std::cout<<"new x = "<<new_size_x<<"  new y = "<<new_size_y<<std::endl;
-    std::cout<<"id draw - "<<id<<std::endl;
+    //std::cout<<"new x = "<<new_size_x<<"  new y = "<<new_size_y<<std::endl;
+    //std::cout<<"id draw - "<<id<<std::endl;
+}
+
+int Object_label::return_distance_to_object(Object_label *ptr_object){
+    if(!ptr_object){
+        std::cout<<"Error: the object does not exist"<<std::endl;
+        return -1;
+    }
+    int dist = distance_points(pos_x, pos_y, ptr_object->pos_x, ptr_object->pos_y);
+    std::cout<<"id = "<<ptr_object->id<<std::endl;
+    std::cout<<"\tdist = "<<dist<<std::endl;
+    return dist;
+
+}
+
+int Object_label::return_distance_to_point(int x, int y){
+
+    int dist = distance_points(pos_x, pos_y, x, y);
+
+    return dist;
+}
+//оптимизация: рассчитывать расст сразу при добавление новой точки
+int Object_label::return_distance_current(){
+    if(list_points->get_count_points() == 1){
+        return 0;
+    }
+
+    int i = 0;
+    int dist = 0;
+    Stack_points_xy *iter_point = list_points->head_stack->get_next(), *iter_point_2 = list_points->head_stack;
+
+    while(iter_point){
+        //std::cout<<"\t\ti = "<<i<<std::endl;
+        dist += distance_points(\
+            iter_point_2->get_x(), iter_point_2->get_y(), iter_point->get_x(), iter_point->get_y());
+        //std::cout<<"\t\tdist = "<<dist<<std::endl;
+        iter_point_2 = iter_point;
+        iter_point = iter_point->get_next();
+        i++;
+    }
+    return dist;
+
 }
 
 
 
-
+int Object_label::get_id(){
+    return id;
+}
+int Object_label::get_size_x(){
+    return size_x;
+}
+int Object_label::get_size_y(){
+    return size_y;
+}
+int Object_label::get_speed(){
+    return speed;
+}
+int Object_label::get_pos_x(){
+    return pos_x;
+}
+int Object_label::get_pos_y(){
+    return pos_y;
+}
 
 
 
