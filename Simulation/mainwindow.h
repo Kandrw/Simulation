@@ -23,10 +23,6 @@ private:
     int size_window_height = 800;
     int size_window_weight = 1000;
 
-    //int map_margin_from_edges_x_left = 10;
-    //int map_margin_from_edges_x_right = 10;
-    //int map_margin_from_edges_y_up = 100;
-    //int map_margin_from_edges_y_down = 10;
     int map_pos_x = 10;
     int map_pos_y = 100;
     int map_size_x = 1000;
@@ -60,7 +56,6 @@ private:
     void mousePressEvent(QMouseEvent *mouse);
     void wheelEvent(QWheelEvent *ev);
     void mouseMoveEvent(QMouseEvent *event);
-    //void mouseReleaseEvent(QMouseEvent *event);
 
 private slots:
 
@@ -82,13 +77,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 };
-
-
-
-
-
-
-
 
 
 
