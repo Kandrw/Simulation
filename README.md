@@ -2,6 +2,6 @@
 # Создание движущегося объекта
 
 ## Задание
-<img src = "lab2.png">
+<img src = "lab_1_2.png">
 
-<img src = "lab3-4.png">
+<img src = "lab_3_4_5.png">
