@@ -12,7 +12,9 @@ Distribution::Distribution(MainWindow *mainwindow)
 {
     std::cout<<"[Init Distribution]"<<std::endl;
 
-    map = new SimulationMap(1000, 1000, 10, 100);
+    //map = new SimulationMap(1000, 1000, 10, 100);
+    map = new GeoSimulationMap(1000, 1000, 0, 0, 83.1068);
+
 
     map_label = new QLabel("");
     map_label->setGeometry(map->get_posX(), map->get_posY(),
@@ -73,6 +75,30 @@ void Distribution::add_obj_list_label(SimulationObject *obj){
 
     std::cout<<"[Distribution] add label new obj"<<std::endl;
 }
+/*
+void Distribution::add_obj_list_label(SimulationObject *obj){
+    std::cout<<"[Distribution] add label new obj..."<<std::endl;
+    QLabel *new_label = new QLabel("");
+    int pos_x, pos_y;
+    int size_label_x, size_label_y;
+    size_label_x = add_percentage(obj->get_size_x(), map_scale_sim);
+    size_label_y = add_percentage(obj->get_size_y(), map_scale_sim);
+    pos_x = map_label->geometry().x() + add_percentage(obj->get_pos_x(), map_scale_sim);
+    pos_y = map_label->geometry().y() + add_percentage(obj->get_pos_y(), map_scale_sim);
+
+    //new_label->setGeometry(\
+    //    obj->get_pos_x() + map->get_posX(), obj->get_pos_y() + map->get_posY(), obj->get_size_x(), obj->get_size_y());
+    new_label->setGeometry(pos_x, pos_y, size_label_x, size_label_y);
+    std::string style_obj = "background-color : " + random_color_16_str();
+    new_label->setStyleSheet(QString::fromStdString(style_obj));
+    mainwindow->layout()->addWidget(new_label);
+    list_label_obj.push_back(new_label);
+    new_label->lower();
+    map_label->stackUnder(new_label);
+
+    std::cout<<"[Distribution] add label new obj"<<std::endl;
+}
+*/
 // Изменение масштаба
 void Distribution::set_map_scale(int y){
     std::cout<<"[Distribution] set map scale..."<<std::endl;
@@ -205,6 +231,7 @@ int Distribution::get_count_objs(){
 }
 // Проверка положения курсора на объектах
 SimulationObject* Distribution::selecting_an_object_by_cursor(int x, int y){
+    //Точка остановки работы
     int i;
     QLabel *i_ptr;
     for(i = 0; i < list_label_obj.size(); ++i){
@@ -219,6 +246,23 @@ SimulationObject* Distribution::selecting_an_object_by_cursor(int x, int y){
     }
     return nullptr;
 }
+/*
+UserEquipment* Distribution::selecting_an_object_by_cursor(int x, int y){
+    int i;
+    QLabel *i_ptr;
+    for(i = 0; i < list_label_obj.size(); ++i){
+        i_ptr = list_label_obj[i];
+        if( (x >= i_ptr->pos().rx() && x <= i_ptr->geometry().x() + i_ptr->pos().rx()) &&\
+            (y >= i_ptr->pos().ry() && y <= i_ptr->geometry().y() + i_ptr->pos().ry()) )
+        {
+
+            selected_object_id = map->get_obj_by_index(i)->get_id();
+            return  map->get_obj_by_index(i);
+        }
+    }
+    return nullptr;
+}
+*/
 
 void Distribution::delete_obj_by_id(int id){
     std::cout<<"[Distribution] delete_obj_by_id..."<<std::endl;

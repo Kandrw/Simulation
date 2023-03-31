@@ -22,6 +22,21 @@ int distance_points(int x1, int y1, int x2, int y2){
 }
 
 
+double distance_points_lat_lon(double lat1, double lon1, double lat2, double lon2, double R){
+    double sin1=sin( (lat1-lat2) / 2.0 );
+    double sin2=sin( (lon1-lon2) / 2.0 );
+    return 2.0 * R * asin( sqrt( sin1 * sin1 + sin2 * sin2 * cos(lat1) * cos(lat2) ) );
+}
+
+double xy_to_lon(double x, double y){
+    return atan2(x, y);
+}
+double zR_to_lat(double z, double R){
+    return asin(z / R);
+}
+
+
+
 std::string random_color_16_str(){
     std::string color = "#";
     int pos;

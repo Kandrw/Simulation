@@ -7,6 +7,9 @@
 class SimulationMap;
 class MainWindow;
 class SimulationObject;
+class GeoSimulationMap;
+
+//class UserEquipment;
 
 //QT
 class QLabel;
@@ -34,13 +37,22 @@ public:
     void delete_select_obj_by_id();
     //void delete_list_label();
     //void delete_all_lists();
+
     SimulationObject* selecting_an_object_by_cursor(int x, int y);
+    //UserEquipment* selecting_an_object_by_cursor(int x, int y);
+
 
 private:
+    //void add_obj_list_label(SimulationObject *obj);
+    //void add_obj_list_label(UserEquipment *obj);
     void add_obj_list_label(SimulationObject *obj);
+
+
     int map_scale_sim = 0;
     int size_factor = 10;
     SimulationMap *map = nullptr;
+    //GeoSimulationMap *map = nullptr;
+
     QLabel *map_label = nullptr;
     MainWindow *mainwindow;
     std::vector <QLabel*> list_label_obj;
