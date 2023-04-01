@@ -42,7 +42,11 @@ void MainWindow::initializationSimulationTimer(){
 void MainWindow::onTimeout(){
     std::cout<<"[==============]"<<std::endl;
     dist_sim->objs_random_walk();
-
+    SimulationObject *ptr_obj = dist_sim->return_select_object();
+    if(ptr_obj){
+        std::string str_info = ptr_obj->get_info_parametrs();
+        ui->label_info_object->setText(QString::fromStdString(str_info));
+    }
 }
 
 //-------------------------------------
@@ -64,7 +68,6 @@ void MainWindow::mousePressEvent(QMouseEvent *mouse){
     if(mouse->buttons() == Qt::LeftButton){
         dist_sim->set_old_mouse_pos(mouse->pos().rx(), mouse->pos().y());
         SimulationObject *ptr_obj = dist_sim->selecting_an_object_by_cursor(mouse->pos().rx(), mouse->pos().y());
-        //UserEquipment *ptr_obj = dist_sim->selecting_an_object_by_cursor(mouse->pos().rx(), mouse->pos().y());
         if(ptr_obj){
             //std::cout<<"[TEST] yes\n";
             std::string str_info = ptr_obj->get_info_parametrs();

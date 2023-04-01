@@ -16,14 +16,12 @@ public:
     int get_count_obj();
 
     void objects_random_walk();
+
     int get_posX();
     int get_posY();
     int get_sizeX();
     int get_sizeY();
-    //int get_map_size_x();
-    //int get_map_size_y();
 
-    //int get_count
     void set_posX(int x);
     void set_posY(int y);
 
@@ -38,30 +36,9 @@ protected:
     std::vector <SimulationObject*> list_object;
 private:
     int map_size_x, map_size_y;
-    //int map_pos_x, map_pos_y;
-
-    //int count_obj;
-    //int map_scale = 0;
 
 };
 
-class GeoSimulationMap : public SimulationMap{
-public:
-    GeoSimulationMap(int sizeX, int sizeY, int sizeZ, double lat, double lon);
-    int get_sizeZ();
-    double get_lat();
-    double get_lon();
-
-    //UserEquipment* create_new_object();
-    SimulationObject* create_new_object();
-
-private:
-    int map_size_z;
-    double lat = 0.0, lon = 83.1068;
-    double lon_1_1000 = 0.03;
-
-
-};
 
 
 

@@ -6,6 +6,7 @@
 int add_percentage(int number, int percent);
 int distance_points(int x1, int y1, int x2, int y2);
 std::string random_color_16_str();
+std::string color_by_id_16_str(int id);
 double distance_points_lat_lon(double lat1, double lon1, double lat2, double lon2, double R = 6371.0);
 
 

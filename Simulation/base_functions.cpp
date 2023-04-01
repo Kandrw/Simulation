@@ -75,5 +75,43 @@ std::string random_color_16_str(){
     return color;
 }
 
+std::string color_by_id_16_str(int id){
+    std::string color = "#";
+    int pos;
+    for(int i = 0; i < 6; ++i){
+        pos = id % 16;
+        id = id >> 1;
+        if(pos > 9){
+            switch (pos)
+            {
+            case 10:
+                color += "A";
+                break;
+            case 11:
+                color += "B";
+                break;
+            case 12:
+                color += "C";
+                break;
+            case 13:
+                color += "D";
+                break;
+            case 14:
+                color += "E";
+                break;
+            case 15:
+                color += "F";
+                break;
+            default:
+                break;
+            }
+        }
+        else{
+            color += std::to_string(pos);
+        }
+    }
+    std::cout<<"color = "<<color<<std::endl;
+    return color;
+}
 
 

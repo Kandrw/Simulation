@@ -39,12 +39,12 @@ public:
     //void delete_all_lists();
 
     SimulationObject* selecting_an_object_by_cursor(int x, int y);
+    SimulationObject* return_select_object();
     //UserEquipment* selecting_an_object_by_cursor(int x, int y);
 
 
 private:
-    //void add_obj_list_label(SimulationObject *obj);
-    //void add_obj_list_label(UserEquipment *obj);
+
     void add_obj_list_label(SimulationObject *obj);
 
 

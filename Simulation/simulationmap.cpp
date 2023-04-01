@@ -1,17 +1,18 @@
 #include "simulationmap.hpp"
 #include "base_functions.hpp"
+#include "Coordinates.hpp"
+#include "simulationobject.hpp"
+#include "UserEquipment.hpp"
 
 #include <iostream>
 
 
 SimulationMap::SimulationMap(int sizeX, int sizeY, int posX, int posY)
 {
-    //map_pos_x = posX;
-    //map_pos_y = posY;
+
     map_size_x = sizeX;
     map_size_y = sizeY;
     pos = new Coordinates(posX, posY);
-    //count_obj = 0;
     std::cout<<"Create map"<<std::endl;
 }
 SimulationMap::~SimulationMap(){
@@ -101,66 +102,6 @@ void SimulationMap::set_posX(int x){
 void SimulationMap::set_posY(int y){
     pos->set_y(y);
 }
-//---------------------------------------------------
-
-GeoSimulationMap::GeoSimulationMap(int sizeX, int sizeY, int sizeZ, double lat, double lon) : \
-    SimulationMap(sizeX, sizeY, 10, 100), lat(lat), lon(lon), map_size_z(sizeZ) {
-    std::cout<<"lon pos = "<<lon<<std::endl;
-}
-//Не проверено
-double GeoSimulationMap::get_lat(){
-    return lat;
-}
-double GeoSimulationMap::get_lon(){
-    return lon;
-}
-int GeoSimulationMap::get_sizeZ(){
-    return map_size_z;
-}
-/*
-UserEquipment* GeoSimulationMap::create_new_object(){
-    std::cout<<"\tCreating obj..."<<std::endl;
-    //SimulationObject *new_obj = create_random_SimulationObject(&list_object, map_size_x, map_size_y);
-    //SimulationObject *new_obj = create_random_SimulationObject(&list_object, get_sizeX(), get_sizeY());
-
-    UserEquipment *new_obj = create_random_UserEquipment(&list_object, get_sizeX(), get_sizeY());
-    list_object.push_back(new_obj);
-    std::cout<<"\tCreating obj - "<<new_obj->get_id()<<std::endl;
-    return new_obj;
-}
-
-*/
-SimulationObject* GeoSimulationMap::create_new_object(){
-    std::cout<<"\tCreating obj..."<<std::endl;
-    //SimulationObject *new_obj = create_random_SimulationObject(&list_object, map_size_x, map_size_y);
-    //SimulationObject *new_obj = create_random_SimulationObject(&list_object, get_sizeX(), get_sizeY());
-
-    UserEquipment *new_obj = create_random_UserEquipment(&list_object, get_sizeX(), get_sizeY());
-    list_object.push_back(new_obj);
-    std::cout<<"\tCreating obj - "<<new_obj->get_id()<<std::endl;
-    return new_obj;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
