@@ -25,7 +25,9 @@ z = R * sin(lat)
 </div>
 
 
+<img src = "lab_6.png">
 
+### Окно с отладочной информацией
 
-
+<img src = "window_debug.png">
 
