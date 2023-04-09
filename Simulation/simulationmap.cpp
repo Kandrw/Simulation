@@ -4,19 +4,23 @@
 #include "simulationobject.hpp"
 #include "UserEquipment.hpp"
 
+#include "output.hpp"
+
 #include <iostream>
 
 
 SimulationMap::SimulationMap(int sizeX, int sizeY, int posX, int posY)
 {
-
+    Output::cout("[Test] creating map\n");
     map_size_x = sizeX;
     map_size_y = sizeY;
     pos = new Coordinates(posX, posY);
-    std::cout<<"Create map"<<std::endl;
+    Output::cout("Create map\n");
+
 }
 SimulationMap::~SimulationMap(){
-    std::cout<<"Delete SimMap..."<<std::endl;
+    Output::cout("Delete SimMap...\n");
+
     int i;
     for(i = 0; i < list_object.size(); ++i){
         delete list_object[i];
@@ -24,20 +28,22 @@ SimulationMap::~SimulationMap(){
     }
     list_object.clear();
     delete pos;
-    std::cout<<"Delete SimMap"<<std::endl;
+    Output::cout("Delete SimMap\n");
+
 }
 
 SimulationObject* SimulationMap::create_new_object(){
-    std::cout<<"\tCreating obj..."<<std::endl;
+    //std::cout<<"\tCreating obj..."<<std::endl;
     SimulationObject *new_obj = create_random_SimulationObject(&list_object, map_size_x, map_size_y);
     list_object.push_back(new_obj);
-    std::cout<<"\tCreating obj - "<<new_obj->get_id()<<std::endl;
+    //std::cout<<"\tCreating obj - "<<new_obj->get_id()<<std::endl;
     return new_obj;
 }
 
 SimulationObject* SimulationMap::get_obj_by_index(int index){
     if(index < 0 || index >= list_object.size()){
-        std::cout<<"[SimulationMap] Error: out of range"<<std::endl;
+        Output::cout("[SimulationMap] Error: out of range\n");
+
         return nullptr;
     }
     return list_object[index];
@@ -102,10 +108,14 @@ void SimulationMap::set_posX(int x){
 void SimulationMap::set_posY(int y){
     pos->set_y(y);
 }
+Coordinates *SimulationMap::get_pos(){
+    return pos;
+}
 
-
-
-
+// для наследования
+double SimulationMap::get_scale(){
+    return 1.0;
+}
 
 
 

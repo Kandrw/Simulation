@@ -4,6 +4,8 @@
 #include <QMainWindow>
 
 class Distribution;
+class QTextEdit;
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -13,6 +15,10 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+//signals:
+    //void someSignal(const QString & tt);
+
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -21,7 +27,10 @@ private:
     void wheelEvent(QWheelEvent *event);
     void mouseMoveEvent(QMouseEvent *mouse);
 
+
 private slots:
+
+    void readOutputStdcout();
 
     void onTimeout();
 
@@ -48,6 +57,10 @@ private:
     QTimer *simulation_timer;
 
     Distribution *dist_sim = nullptr;
+
+    int test = 0;
+    QTimer *timer_stdout;
+
 
 private:
     void initializationSimulationTimer();

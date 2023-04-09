@@ -2,4 +2,7 @@
     <qresource prefix="/images">
         <file>res/region.png</file>
     </qresource>
+    <qresource prefix="/files">
+        <file>res/buffer.txt</file>
+    </qresource>
 </RCC>

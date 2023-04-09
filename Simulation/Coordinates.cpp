@@ -1,5 +1,6 @@
 #include "Coordinates.hpp"
 
+#include <iostream>
 #include <cmath>
 
 //--------------------------------------
@@ -17,14 +18,17 @@ Coordinates::Coordinates(int x, int y, int z) : x(x), y(y), z(z)
 {
     lon = atan2((double)x, (double)y);
     lat = asin((double)z / R);
+    //std::cout<<"XYZ\n";
 }
 // Не доделана
-Coordinates::Coordinates(double lat, double lon){
+Coordinates::Coordinates(double lat, double lon, double alt = 0){
     this->lat = lat;
     this->lon = lon;
     x = R * cos(lat) * cos(lon);
     y = R * cos(lat) * sin(lon);
     z = R * sin(lat);
+    this->alt = alt;
+    //std::cout<<"LatLonAlt\n";
 }
 //Доделать
 Coordinates::~Coordinates(){
@@ -58,6 +62,10 @@ double Coordinates::get_lat(){
 double Coordinates::get_lon(){
     return lon;
 }
+double Coordinates::get_alt(){
+    return alt;
+}
+
 void Coordinates::set_lat(double lat){
     this->lat = lat;
     z = R * sin(this->lat);
@@ -66,6 +74,10 @@ void Coordinates::set_lon(double lon){
     this->lon = lon;
     x = R * cos(this->lat) * cos(this->lon);
     y = R * cos(this->lat) * sin(this->lon);
+}
+void Coordinates::set_alt(double alt){
+    this->alt = alt;
+
 }
 
 

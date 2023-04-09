@@ -2,6 +2,7 @@
 #include "base_functions.hpp"
 #include "Coordinates.hpp"
 #include "UserEquipment.hpp"
+#include "output.hpp"
 
 #include <iostream>
 #include <vector>
@@ -18,7 +19,8 @@ SimulationObject::SimulationObject(\
     pos = new Coordinates(pos_x, pos_y);
     list_point.push_back(pos);
     found_move = false;
-    std::cout<<"Create object: "<<id<<std::endl;
+    //std::cout<<"Create object: "<<id<<std::endl;
+    Output::cout("Create object: " + std::to_string(id) + "\n");
 }
 SimulationObject::~SimulationObject(){
     //pos - находится в списке точек
@@ -63,7 +65,10 @@ bool SimulationObject::random_walk(int map_size_x, int map_size_y){
     found_move = false;
     return false;
 }
-
+bool SimulationObject::random_walk(Coordinates *point_1, Coordinates *point_2){
+    std::cout<<"Метод не определен\n";
+    return false;
+}
 int SimulationObject::return_distance_to_obj(SimulationObject *obj){
     int dist = distance_points(pos->get_x(), pos->get_y(), obj->get_pos_x(), obj->get_pos_y());
     return dist;
@@ -87,6 +92,9 @@ int SimulationObject::get_pos_x(){
 }
 int SimulationObject::get_pos_y(){
     return pos->get_y();
+}
+Coordinates *SimulationObject::get_pos(){
+    return pos;
 }
 int SimulationObject::get_size_x(){
     return size_x;

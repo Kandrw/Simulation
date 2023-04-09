@@ -3,13 +3,24 @@
 #include "distribution.hpp"
 #include "simulationobject.hpp"
 
+#include "output.hpp"
+
+//#include <QtWidgets>
 #include "QTimer"
 #include <QMovie>
 #include <QMouseEvent>
+#include <QProcess>
+
+
 
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <fstream>
+
+#include <sstream>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,11 +29,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowTitle("Simulation");
     this->setFixedSize(size_window_weight, size_window_height);
-
+    Output::initialization();
     initializationSimulationTimer();
+
     dist_sim = new Distribution(this);
 
-    std::cout<<"[Initialization MainWindow]"<<std::endl;
+    timer_stdout = new QTimer(this);
+
+    connect(timer_stdout, SIGNAL(timeout()), this, SLOT( readOutputStdcout() ));
+    timer_stdout->start(1);
+
+
+    //std::cout<<"[Initialization MainWindow]"<<std::endl;
+    Output::cout("[Initialization MainWindow]\n");
 }
 
 MainWindow::~MainWindow()
@@ -30,6 +49,18 @@ MainWindow::~MainWindow()
     delete dist_sim;
     delete ui;
     std::cout<<"[delete MainWindow]"<<std::endl;
+    fclose(stdout);
+}
+
+
+void MainWindow::readOutputStdcout(){
+    test++;
+    std::string buf;
+    buf += std::to_string(test) + "\n";
+    buf += Output::get_and_delete_dec();
+    ui->textEdit->setText(QString::fromStdString(buf));
+
+
 }
 
 void MainWindow::initializationSimulationTimer(){
@@ -37,16 +68,19 @@ void MainWindow::initializationSimulationTimer(){
     connect(simulation_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
     simulation_timer->stop();
     std::cout<<"Timer initialization"<<std::endl;
+    //Output::cout("Timer initialization\n");
 }
 
 void MainWindow::onTimeout(){
-    std::cout<<"[==============]"<<std::endl;
+    //std::cout<<"[==============]"<<std::endl;
+    //std::cout<<"test = "<<test<<"\n";
     dist_sim->objs_random_walk();
     SimulationObject *ptr_obj = dist_sim->return_select_object();
     if(ptr_obj){
         std::string str_info = ptr_obj->get_info_parametrs();
         ui->label_info_object->setText(QString::fromStdString(str_info));
     }
+    //Output::cout("[=-=-=-=-=-=]\n");
 }
 
 //-------------------------------------
@@ -88,7 +122,8 @@ void MainWindow::on_exit_program_triggered()
 
 void MainWindow::on_button_simulation_pause_clicked()
 {
-    std::cout<<"Test pause - click"<<std::endl;
+    //std::cout<<"Test pause - click"<<std::endl;
+    Output::cout("Test pause - click\n");
     if(!pause_simulation){
         ui->button_simulation_pause->setText("Запуск");
         simulation_timer->stop();
@@ -102,7 +137,8 @@ void MainWindow::on_button_simulation_pause_clicked()
 
 void MainWindow::on_button_create_obj_clicked()
 {
-    std::cout<<"[button create]"<<std::endl;
+    //std::cout<<"[button create]"<<std::endl;
+    Output::cout("[button create]\n");
     dist_sim->create_new_object(1);
     //ui->label_count_object_all->setText(QString::fromStdString(count_object));
     std::string count_object = std::to_string(dist_sim->get_count_objs());

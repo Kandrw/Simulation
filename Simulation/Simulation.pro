@@ -16,6 +16,7 @@ SOURCES += \
     distribution.cpp \
     main.cpp \
     mainwindow.cpp \
+    output.cpp \
     simulationmap.cpp \
     simulationobject.cpp
 
@@ -26,6 +27,7 @@ HEADERS += \
     base_functions.hpp \
     distribution.hpp \
     mainwindow.h \
+    output.hpp \
     simulationmap.hpp \
     simulationobject.hpp
 

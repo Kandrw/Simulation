@@ -71,7 +71,7 @@ std::string random_color_16_str(){
             color += std::to_string(pos);
         }
     }
-    std::cout<<"color = "<<color<<std::endl;
+    //std::cout<<"color = "<<color<<std::endl;
     return color;
 }
 
@@ -110,7 +110,7 @@ std::string color_by_id_16_str(int id){
             color += std::to_string(pos);
         }
     }
-    std::cout<<"color = "<<color<<std::endl;
+    //std::cout<<"color = "<<color<<std::endl;
     return color;
 }
 

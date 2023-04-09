@@ -36,11 +36,14 @@ public:
 
     ~SimulationObject();
     virtual bool random_walk(int map_size_x, int map_size_y);
+    virtual bool random_walk(Coordinates *point_1, Coordinates *point_2);
+
 
     int get_size_x();
     int get_size_y();
     int get_pos_x();
     int get_pos_y();
+    Coordinates *get_pos();
     int get_probabilistic_movement();
     //int set_probabilistic_movement();
     int get_speed();
